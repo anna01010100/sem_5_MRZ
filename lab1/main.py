@@ -162,16 +162,17 @@ class Use:
         return Use.denormalize(MC.reshape(colors, size1, size2, 3))
     
     
+    def denormalize_range(x):
+        x = (x + 1) / 2
+        if x > 1: 
+            x = 1
+        if x < 0:
+            x = 0
+        return x 
+
+
     def denormalize(pixels):
-        pixels = copy.deepcopy(pixels)
-        for row in range(len(pixels)):
-            for column in range(len(pixels[row])):
-                for color in range(len(pixels[row][column])):
-                    pixels[row][column][color] = (pixels[row][column][color] + 1) / 2
-                    if pixels[row][column][color] > 1:
-                        pixels[row][column][color] = 1
-                    elif pixels[row][column][color] < 0:
-                        pixels[row][column][color] = 0
+        pixels = [[[ Use.denormalize_range(pixels[i][j][color])  for color in range(len(pixels[i][j]))] for j in range(len(pixels[i]))] for i in range(len(pixels))]
         return pixels
 
 
